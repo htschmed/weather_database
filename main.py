@@ -3,10 +3,16 @@ from db import LocationDatabase
 from mapping import Location
 from pprint import pprint
 
-location_list = Location.import_locations('School_locations.txt', delimiter='\t', codec='utf-16')
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+school_filepath = config['Data Files']['school_file']
+db_filepath = config['Data Files']['db_file']
+
+location_list = Location.import_locations(school_filepath, delimiter='\t', codec='utf-16')
 
 #Initialize our SQLITE 
-location_db = LocationDatabase('pythonsqlite.db')
+location_db = LocationDatabase(db_filepath)
 
 #Insert location object data into SQLITE Database
 for item in location_list:
